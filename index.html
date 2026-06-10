@@ -3,368 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OmniForge - Painel Financeiro</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>OmniForge IA - Auditoria Fiscal Inteligente</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0f172a; color: #f8fafc; display: flex; min-height: 100vh; overflow: hidden; }
-        
-        /* Sidebar */
-        .sidebar { width: 260px; background-color: #1e293b; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid #334155; height: 100vh; }
-        .logo { font-size: 22px; font-weight: bold; color: #38bdf8; text-align: center; margin-bottom: 40px; letter-spacing: 1px; }
-        .nav-links { list-style: none; }
-        .nav-links li { padding: 14px 18px; margin-bottom: 8px; border-radius: 8px; cursor: pointer; transition: 0.3s; color: #94a3b8; font-weight: 500; }
-        .nav-links li:hover, .nav-links li.active { background-color: #38bdf8; color: #0f172a; }
-        .version { font-size: 12px; color: #64748b; text-align: center; }
-
-        /* Main Content */
-        .main-content { flex: 1; padding: 40px; overflow-y: auto; height: 100vh; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .header h1 { font-size: 28px; }
-        .status-badge { background-color: #10b981; color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 14px; font-weight: 600; }
-
-        /* Abas de Conteúdo */
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
-        /* Cards */
-        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .card { background-color: #1e293b; padding: 24px; border-radius: 12px; border: 1px solid #334155; }
-        .card h3 { font-size: 14px; color: #94a3b8; text-transform: uppercase; margin-bottom: 10px; }
-        .card p { font-size: 24px; font-weight: bold; color: #f8fafc; }
-
-        /* Gráfico */
-        .chart-section { background-color: #1e293b; border: 1px solid #334155; padding: 24px; border-radius: 12px; margin-bottom: 30px; height: 320px; }
-        .chart-container { position: relative; width: 100%; height: 100%; max-height: 240px; }
-
-        /* Upload */
-        .upload-section { background-color: #1e293b; border: 2px dashed #38bdf8; padding: 40px; border-radius: 12px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .upload-section:hover { background-color: #1e293bba; }
-        .upload-icon { font-size: 40px; color: #38bdf8; margin-bottom: 15px; }
-        #file-input { display: none; }
-        .loading-text { display: none; color: #eab308; font-weight: bold; margin-top: 10px; }
-
-        /* Barras de Filtro e Busca */
-        .filter-container { display: flex; gap: 15px; margin-bottom: 20px; align-items: center; }
-        .search-input { flex: 1; padding: 12px 16px; background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #fff; font-size: 15px; outline: none; transition: 0.3s; }
-        .search-input:focus { border-color: #38bdf8; }
-        .filter-select { padding: 12px 16px; background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #fff; font-size: 15px; cursor: pointer; outline: none; }
-        .filter-select:focus { border-color: #38bdf8; }
-
-        /* Tabelas */
-        .table-container { background-color: #1e293b; border-radius: 12px; border: 1px solid #334155; overflow: hidden; }
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        th, td { padding: 16px; border-bottom: 1px solid #334155; }
-        th { background-color: #0f172a; color: #38bdf8; font-size: 14px; text-transform: uppercase; }
-
-        /* Relatórios Box */
-        .report-box { background-color: #1e293b; border-left: 4px solid #38bdf8; padding: 24px; border-radius: 0 12px 12px 0; margin-top: 20px; line-height: 1.6; }
-        .report-box h3 { margin-bottom: 15px; color: #38bdf8; }
-        .btn-pdf { display: inline-block; background-color: #38bdf8; color: #0f172a; padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.3s; }
-        .btn-clear { display: inline-block; background-color: #ef4444; color: #fff; padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; margin-left: 10px; transition: 0.3s; }
-
-        /* Configurações */
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; color: #94a3b8; margin-bottom: 8px; font-size: 14px; }
-        .form-group input { width: 100%; max-width: 400px; padding: 12px; background-color: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #fff; font-size: 16px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
+        body { background-color: #090d16; color: #f8fafc; overflow-x: hidden; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 25px 10%; background: rgba(9, 13, 22, 0.8); backdrop-filter: blur(10px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid #1e293b; }
+        .logo { font-size: 24px; font-weight: bold; color: #38bdf8; letter-spacing: 1px; }
+        nav a { color: #94a3b8; text-decoration: none; margin-left: 30px; font-weight: 500; transition: 0.3s; }
+        nav a:hover { color: #38bdf8; }
+        .btn-top { background: #38bdf8; color: #090d16; padding: 10px 20px; border-radius: 8px; font-weight: bold; text-decoration: none; transition: 0.3s; margin-left: 30px; }
+        .btn-top:hover { background: #7dd3fc; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); }
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px; background: radial-gradient(circle at center, #1e293b66 0%, #090d16 70%); }
+        .hero h1 { font-size: 56px; font-weight: 800; line-height: 1.2; margin-bottom: 20px; max-width: 900px; background: linear-gradient(to right, #fff, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 20px; color: #94a3b8; margin-bottom: 40px; max-width: 600px; }
+        .btn-hero { background: linear-gradient(135px, #38bdf8, #0284c7); color: #fff; padding: 16px 36px; border-radius: 8px; font-size: 18px; font-weight: bold; text-decoration: none; transition: 0.3s; box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3); }
+        .btn-hero:hover { transform: translateY(-3px); box-shadow: 0 6px 25px rgba(56, 189, 248, 0.5); }
+        .features { padding: 100px 10%; background-color: #0f172a; border-top: 1px solid #1e293b; text-align: center; }
+        .section-title { font-size: 36px; font-weight: 700; margin-bottom: 50px; }
+        .section-title span { color: #38bdf8; }
+        .grid-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .feature-card { background: #1e293b; border: 1px solid #334155; padding: 40px 30px; border-radius: 16px; text-align: left; transition: 0.3s; }
+        .feature-card:hover { transform: translateY(-5px); border-color: #38bdf8; }
+        .feature-icon { font-size: 35px; color: #38bdf8; margin-bottom: 20px; }
+        .feature-card h3 { font-size: 20px; margin-bottom: 15px; }
+        .feature-card p { color: #94a3b8; line-height: 1.6; }
+        .pricing { padding: 100px 10%; text-align: center; }
+        .grid-pricing { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 50px; max-width: 1100px; margin-left: auto; margin-right: auto; }
+        .price-card { background: #0f172a; border: 1px solid #1e293b; padding: 50px 30px; border-radius: 16px; text-align: center; position: relative; transition: 0.3s; }
+        .price-card.featured { border-color: #38bdf8; background: linear-gradient(180px, #1e293b 0%, #0f172a 100%); transform: scale(1.05); }
+        .badge { background: #38bdf8; color: #090d16; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; position: absolute; top: 20px; right: 20px; }
+        .price-card h3 { font-size: 22px; margin-bottom: 15px; color: #94a3b8; }
+        .price { font-size: 48px; font-weight: 800; margin-bottom: 30px; color: #fff; }
+        .price span { font-size: 16px; font-weight: 400; color: #94a3b8; }
+        .price-list { list-style: none; text-align: left; margin-bottom: 40px; color: #94a3b8; }
+        .price-list li { margin-bottom: 12px; display: flex; align-items: center; }
+        .price-list li::before { content: "✓"; color: #38bdf8; margin-right: 10px; font-weight: bold; }
+        .btn-price { display: block; background: #1e293b; color: #fff; padding: 14px; border-radius: 8px; font-weight: bold; text-decoration: none; border: 1px solid #334155; transition: 0.3s; }
+        .price-card.featured .btn-price { background: #38bdf8; color: #090d16; border: none; }
+        .btn-price:hover { background: #38bdf8; color: #090d16; border-color: #38bdf8; }
+        footer { background: #090d16; padding: 40px 10%; border-top: 1px solid #1e293b; text-align: center; color: #64748b; font-size: 14px; }
     </style>
 </head>
 <body>
-
-    <div class="sidebar">
-        <div>
-            <div class="logo">OMNIFORGE</div>
-            <ul class="nav-links">
-                <li class="active" onclick="mudarAba('dashboard')">Dashboard</li>
-                <li onclick="mudarAba('notas')">Notas Fiscais</li>
-                <li onclick="mudarAba('relatorios')">Relatórios IA</li>
-                <li onclick="mudarAba('config')">Configurações</li>
-            </ul>
-        </div>
-        <div class="version">Versão Beta v1.5.0</div>
-    </div>
-
-    <div class="main-content">
-        <div class="header">
-            <div>
-                <h1 id="main-title">Painel de Controle: Dashboard</h1>
-                <p style="color: #64748b; margin-top: 5px;">Gerenciamento inteligente de dados e faturamento</p>
+    <header>
+        <div class="logo">OMNIFORGE IA</div>
+        <nav>
+            <a href="#solucoes">Soluções</a>
+            <a href="#precos">Preços</a>
+            <a class="btn-top" href="painel.html">Agendar Demonstração</a>
+        </nav>
+    </header>
+    <section class="hero">
+        <h1>Elimine 100% do Trabalho Manual na Auditoria de Notas Fiscais</h1>
+        <p>Arraste seus arquivos XML, cruze dados fiscais automaticamente e gere relatórios de compliance in loco com o poder da nossa IA.</p>
+        <a href="painel.html" class="btn-hero">Começar Teste Gratuito</a>
+    </section>
+    <section id="solucoes" class="features">
+        <h2 class="section-title">Construído para <span>Escalar o seu Setor Fiscal</span></h2>
+        <div class="grid-features">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>Processamento Autônomo</h3>
+                <p>Nossa inteligência lê e valida chaves de acesso e alíquotas de múltiplos arquivos XML simultaneamente em menos de 2 segundos.</p>
             </div>
-            <span class="status-badge" id="system-status">Sistema IA Online</span>
-        </div>
-
-        <div id="dashboard" class="tab-content active">
-            <div class="cards-grid">
-                <div class="card">
-                    <h3>Notas Processadas</h3>
-                    <p id="counter-notes">0 / 150</p>
-                </div>
-                <div class="card">
-                    <h3>Volume Auditado</h3>
-                    <p id="counter-volume">R$ 0,00</p>
-                </div>
-                <div class="card">
-                    <h3>Tempo Economizado</h3>
-                    <p id="counter-time">0h</p>
-                </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Visualização Executiva</h3>
+                <p>Gráficos interativos em tempo real para controle absoluto do volume auditado e do faturamento gerado por lote.</p>
             </div>
-
-            <div class="chart-section">
-                <h3 style="font-size: 14px; color: #94a3b8; text-transform: uppercase; margin-bottom: 15px;">Fluxo de Faturamento Auditado (R$)</h3>
-                <div class="chart-container">
-                    <canvas id="financeChart"></canvas>
-                </div>
-            </div>
-
-            <h2 style="margin-bottom: 15px; font-size: 18px;">Processar Novos Documentos</h2>
-            <input type="file" id="file-input" multiple accept=".xml">
-            <div class="upload-section" id="drop-zone" onclick="document.getElementById('file-input').click()">
-                <div class="upload-icon" id="box-icon">📁</div>
-                <p id="upload-text">Arraste e solte seus arquivos de <strong>Notas Fiscais (XML)</strong> aqui, ou clique para navegar</p>
-                <div class="loading-text" id="loading-status">🤖 IA Analisando estrutura do arquivo XML... aguarde.</div>
+            <div class="feature-card">
+                <div class="feature-icon">📥</div>
+                <h3>Exportação de Relatórios</h3>
+                <p>Gere relatórios oficiais de auditoria customizados e limpos em PDF prontos para apresentação ou arquivamento.</p>
             </div>
         </div>
-
-        <div id="notas" class="tab-content">
-            <h2 style="font-size: 20px; margin-bottom: 15px;">Histórico de Notas Auditadas</h2>
-            
-            <div class="filter-container">
-                <input type="text" id="search-bar" class="search-input" placeholder="🔍 Buscar por Chave / ID da Nota..." oninput="filtrarTabela()">
-                <select id="filter-value" class="filter-select" onchange="filtrarTabela()">
-                    <option value="todos">Todos os Valores</option>
-                    <option value="alto">Valores Altos (Acima de R$ 2.000)</option>
-                    <option value="baixo">Valores Baixos (Até R$ 2.000)</option>
-                </select>
+    </section>
+    <section id="precos" class="pricing">
+        <h2 class="section-title">Planos Flexíveis para <span>Qualquer Operação</span></h2>
+        <div class="grid-pricing">
+            <div class="price-card">
+                <h3>Plano Básico</h3>
+                <div class="price">R$ 300<span>/mês</span></div>
+                <ul class="price-list">
+                    <li>Até 150 XMLs por mês</li>
+                    <li>Dashboard de faturamento</li>
+                    <li>Histórico local de notas</li>
+                    <li>Suporte via e-mail</li>
+                </ul>
+                <a href="painel.html" class="btn-price">Assinar Plano</a>
             </div>
-
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Chave / ID da Nota</th>
-                            <th>Data de Emissão</th>
-                            <th>Valor Total</th>
-                            <th>Resultado da Auditoria</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body">
-                        <tr id="no-data-row"><td colspan="4" style="text-align: center; color: #64748b; padding: 30px;">Nenhuma nota enviada ainda.</td></tr>
-                    </tbody>
-                </table>
+            <div class="price-card featured">
+                <div class="badge">Mais Vendido</div>
+                <h3>Plano Profissional</h3>
+                <div class="price">R$ 600<span>/mês</span></div>
+                <ul class="price-list">
+                    <li>XMLs ilimitados</li>
+                    <li>Gráfico de fluxo dinâmico</li>
+                    <li>Relatórios estratégicos IA</li>
+                    <li>Exportação em PDF oficial</li>
+                </ul>
+                <a href="painel.html" class="btn-price">Começar Agora</a>
             </div>
-        </div>
-
-        <div id="relatorios" class="tab-content">
-            <h2 style="font-size: 20px; margin-bottom: 10px;">Análise Estratégica da Inteligência Artificial</h2>
-            <div class="report-box">
-                <h3>💡 Insights de Otimização de Faturamento</h3>
-                <p id="report-text" style="color: #94a3b8;">Aguardando o envio de documentos na aba Dashboard para compilar os dados reais da empresa...</p>
-            </div>
-            <button class="btn-pdf" onclick="window.print()">📥 Exportar Relatório Oficial (PDF)</button>
-            <button class="btn-clear" onclick="limparBancoDeDados()">🗑 Zerar Banco de Dados</button>
-        </div>
-
-        <div id="config" class="tab-content">
-            <h2 style="font-size: 20px; margin-bottom: 20px;">Configurações do Sistema</h2>
-            <div class="form-group">
-                <label>Nome da Empresa Corporativa</label>
-                <input type="text" id="cfg-name" value="Empresa Parceira LTDA" onchange="salvarConfiguracoes()">
-            </div>
-            <div class="form-group">
-                <label>CNPJ Destinatário Padrão</label>
-                <input type="text" id="cfg-cnpj" value="00.000.000/0001-00" onchange="salvarConfiguracoes()">
+            <div class="price-card">
+                <h3>Corporativo</h3>
+                <div class="price">R$ 1.200<span>/mês</span></div>
+                <ul class="price-list">
+                    <li>Múltiplos CNPJs integrados</li>
+                    <li>Auditoria avançada de alíquotas</li>
+                    <li>Suporte Prioritário 24/7</li>
+                    <li>Banco de dados dedicado</li>
+                </ul>
+                <a href="painel.html" class="btn-price">Falar com Consultor</a>
             </div>
         </div>
-    </div>
-
-    <script>
-        function mudarAba(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            if(event) event.currentTarget.classList.add('active');
-            const nomes = { dashboard: 'Dashboard', notas: 'Notas Fiscais', relatorios: 'Relatórios IA', config: 'Configurações' };
-            document.getElementById('main-title').innerText = `Painel de Controle: ${nomes[tabId]}`;
-        }
-
-        const ctx = document.getElementById('financeChart').getContext('2d');
-        const financeChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Lote 1', 'Lote 2', 'Lote 3', 'Lote 4', 'Lote 5', 'Lote 6', 'Lote 7'],
-                datasets: [{
-                    data: [0, 0, 0, 0, 0, 0, 0],
-                    borderColor: '#38bdf8',
-                    backgroundColor: 'rgba(56, 189, 248, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: { y: { grid: { color: '#334155' } }, x: { grid: { display: false } } },
-                plugins: { legend: { display: false } }
-            }
-        });
-
-        let dadosSistema = JSON.parse(localStorage.getItem('omniforge_db')) || {
-            totalNotas: 0,
-            volumeAcumulado: 0,
-            tempoSalvo: 0,
-            historicoNotas: [],
-            dadosGrafico: [0, 0, 0, 0, 0, 0, 0],
-            loteIndex: 0
-        };
-
-        document.addEventListener("DOMContentLoaded", () => {
-            document.getElementById('cfg-name').value = localStorage.getItem('cfg_name') || "Empresa Parceira LTDA";
-            document.getElementById('cfg-cnpj').value = localStorage.getItem('cfg_cnpj') || "00.000.000/0001-00";
-            renderizarDadosSalvos();
-        });
-
-        function salvarConfiguracoes() {
-            localStorage.setItem('cfg_name', document.getElementById('cfg-name').value);
-            localStorage.setItem('cfg_cnpj', document.getElementById('cfg-cnpj').value);
-        }
-
-        function renderizarDadosSalvos() {
-            document.getElementById('counter-notes').innerText = `${dadosSistema.totalNotas} / 150`;
-            document.getElementById('counter-volume').innerText = `R$ ${dadosSistema.volumeAcumulado.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            document.getElementById('counter-time').innerText = `${dadosSistema.tempoSalvo.toFixed(1)}h`;
-
-            financeChart.data.datasets[0].data = dadosSistema.dadosGrafico;
-            financeChart.update();
-
-            // Executa a filtragem/renderização da tabela dinamicamente
-            filtrarTabela();
-
-            if (dadosSistema.historicoNotas.length > 0) {
-                document.getElementById('report-text').innerHTML = `
-                    <strong>Relatório Analítico de Auditoria Fiscal OmniForge</strong><br><br>
-                    • <strong>Mapeamento de Arquivos:</strong> ${dadosSistema.totalNotas} arquivos XML integrados diretamente da SEFAZ.<br>
-                    • <strong>Volume Financeiro Movimentado:</strong> R$ ${dadosSistema.volumeAcumulado.toLocaleString('pt-BR', {minimumFractionDigits: 2})}.<br>
-                    • <strong>Eficiência de Processo:</strong> ${dadosSistema.tempoSalvo.toFixed(1)} horas de digitação manual mitigadas.<br><br>
-                    📢 <strong>Parecer Tecnológico:</strong> A estrutura dos arquivos XML de faturamento foi mapeada com sucesso. Nenhuma quebra de tag ou divergência de integridade de dados foi detectada. O sistema local encontra-se atualizado e em conformidade operacional.
-                `;
-            }
-        }
-
-        // LÓGICA DO MOTOR DE FILTRO E BUSCA EM TEMPO REAL
-        function filtrarTabela() {
-            const tbody = document.getElementById('table-body');
-            const termoBusca = document.getElementById('search-bar').value.toLowerCase();
-            const tipoFiltro = document.getElementById('filter-value').value;
-
-            // Limpa a tabela antes de aplicar os filtros
-            tbody.innerHTML = "";
-
-            if (dadosSistema.historicoNotas.length === 0) {
-                tbody.innerHTML = `<tr id="no-data-row"><td colspan="4" style="text-align: center; color: #64748b; padding: 30px;">Nenhuma nota enviada ainda.</td></tr>`;
-                return;
-            }
-
-            // Filtra o array com base na busca e na seleção
-            const notasFiltradas = dadosSistema.historicoNotas.filter(nota => {
-                const bateuBusca = nota.chave.toLowerCase().includes(termoBusca);
-                
-                let bateuFiltro = true;
-                if (tipoFiltro === "alto") bateuFiltro = nota.valor > 2000;
-                if (tipoFiltro === "baixo") bateuFiltro = nota.valor <= 2000;
-
-                return bateuBusca && bateuFiltro;
-            });
-
-            // Se o filtro não encontrar nada, avisa na tela
-            if (notasFiltradas.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #64748b; padding: 30px;">Nenhuma nota corresponde aos filtros aplicados.</td></tr>`;
-                return;
-            }
-
-            // Injeta as linhas filtradas na tabela
-            notasFiltradas.forEach(nota => {
-                const novaLinha = document.createElement('tr');
-                novaLinha.innerHTML = `
-                    <td style="font-family: monospace; color:#38bdf8; font-size:13px;">${nota.chave}</td>
-                    <td>${nota.data}</td>
-                    <td style="font-weight: 600;">R$ ${nota.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
-                    <td style="color:#10b981;">✔ XML validado & auditado</td>
-                `;
-                tbody.appendChild(novaLinha);
-            });
-        }
-
-        document.getElementById('file-input').addEventListener('change', (e) => {
-            const arquivos = e.target.files;
-            if (arquivos.length > 0) {
-                document.getElementById('system-status').innerText = "IA Analisando...";
-                document.getElementById('box-icon').innerText = "⏳";
-                document.getElementById('upload-text').style.display = "none";
-                document.getElementById('loading-status').style.display = "block";
-
-                let valorDoLoteAtual = 0;
-                let arquivosProcessados = 0;
-
-                Array.from(arquivos).forEach(arquivo => {
-                    const leitor = new FileReader();
-
-                    leitor.onload = function(evento) {
-                        const conteudoTexto = evento.target.result;
-                        const parser = new DOMParser();
-                        const xmlDoc = parser.parseFromString(conteudoTexto, "text/xml");
-
-                        let chaveNota = xmlDoc.getElementsByTagName("chNFe")[0]?.textContent || "NF-" + Math.floor(100000 + Math.random() * 900000);
-                        let dataEmissaoRaw = xmlDoc.getElementsByTagName("dhEmi")[0]?.textContent || new Date().toISOString();
-                        let valorNotaRaw = xmlDoc.getElementsByTagName("vNF")[0]?.textContent || (Math.random() * 4000 + 500).toFixed(2); // Ajustado para variar mais os valores
-
-                        let dataFormatada = new Date(dataEmissaoRaw).toLocaleDateString('pt-BR');
-                        let valorNota = parseFloat(valorNotaRaw);
-
-                        valorDoLoteAtual += valorNota;
-                        dadosSistema.volumeAcumulado += valorNota;
-                        dadosSistema.totalNotas++;
-                        dadosSistema.tempoSalvo += 0.25;
-
-                        dadosSistema.historicoNotas.unshift({
-                            chave: chaveNota,
-                            data: dataFormatada,
-                            valor: valorNota
-                        });
-
-                        arquivosProcessados++;
-
-                        if (arquivosProcessados === arquivos.length) {
-                            if (dadosSistema.loteIndex < 7) {
-                                dadosSistema.dadosGrafico[dadosSistema.loteIndex] = valorDoLoteAtual;
-                                dadosSistema.loteIndex++;
-                            } else {
-                                dadosSistema.dadosGrafico.shift();
-                                dadosSistema.dadosGrafico.push(valorDoLoteAtual);
-                            }
-
-                            localStorage.setItem('omniforge_db', JSON.stringify(dadosSistema));
-                            renderizarDadosSalvos();
-
-                            document.getElementById('system-status').innerText = "Sistema IA Online";
-                            document.getElementById('box-icon').innerText = "✅";
-                            document.getElementById('loading-status').style.display = "none";
-                            document.getElementById('upload-text').style.display = "block";
-                            document.getElementById('upload-text').innerHTML = "<strong>Documentos salvos no banco local!</strong> Dê F5 para testar a retenção de dados.";
-                        }
-                    };
-                    leitor.readAsText(arquivo);
-                });
-            }
-        });
-
-        function limparBancoDeDados() {
-            if(confirm("Tem certeza que deseja apagar todo o histórico e zerar o banco de dados local?")) {
-                localStorage.removeItem('omniforge_db');
-                dadosSistema = { totalNotas: 0, volumeAcumulado: 0, tempoSalvo: 0, historicoNotas: [], dadosGrafico: [0, 0, 0, 0, 0, 0, 0], loteIndex: 0 };
-                location.reload();
-            }
-        }
-    </script>
+    </section>
+    <footer>
+        <p>&copy; 2026 OmniForge Tecnologias S.A. Todos os direitos reservados.</p>
+    </footer>
 </body>
 </html>
