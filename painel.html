@@ -44,8 +44,41 @@
         .btn-clear { display: inline-block; background-color: #ef4444; color: #fff; padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; margin-left: 10px; transition: 0.3s; }
         .audit-alert { padding: 12px; border-radius: 6px; margin-bottom: 10px; font-size: 14px; display: flex; justify-content: space-between; }
         .audit-success { background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; color: #10b981; }
+    /* Estilo do Bloqueio de Tela Premium */
+.modal-premium {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(9, 13, 22, 0.9);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    justify-content: center; align-items: center;
+}
+.modal-content {
+    background: #1e293b;
+    border: 2px solid #38bdf8;
+    padding: 40px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 450px;
+    box-shadow: 0px 0px 30px rgba(56, 189, 248, 0.3);
+}
+.modal-content h3 { font-size: 24px; color: #fff; margin-bottom: 15px; }
+.modal-content p { color: #94a3b8; margin-bottom: 25px; line-height: 1.6; }
+.btn-upgrade { display: inline-block; background: #38bdf8; color: #090d16; padding: 14px 28px; border-radius: 8px; font-weight: bold; text-decoration: none; transition: 0.3s; }
+.btn-upgrade:hover { background: #7dd3fc; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); }
+.btn-fechar { background: transparent; color: #64748b; border: none; margin-top: 15px; cursor: pointer; display: block; width: 100%; font-size: 14px; }
     </style>
 </head>
+<div id="modalPremium" class="modal-premium">
+    <div class="modal-content">
+        <div style="font-size: 50px; margin-bottom: 15px;">🔒</div>
+        <h3>Recurso Exclusivo do Plano Profissional</h3>
+        <p>A auditoria automática de alíquotas e a exportação de relatórios em PDF estão disponíveis apenas para assinantes ativos.</p>
+        <a href="index.html#precos" class="btn-upgrade">Fazer Upgrade Agora</a>
+        <button class="btn-fechar" onclick="fecharModal()">Voltar ao Dashboard</button>
+    </div>
+</div>
 <body>
     <div class="sidebar">
         <div>
@@ -139,13 +172,24 @@
     </div>
 
     <script>
-        function mudarAba(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            if(event) event.currentTarget.classList.add('active');
-            const nomes = { dashboard: 'Dashboard', notas: 'Notas Fiscais', auditoria: 'Auditoria & Compliance', relatorios: 'Relatórios IA' };
-            document.getElementById('main-title').innerText = `Painel de Controle: ${nomes[tabId]}`;
+       function mudarAba(tabId) {
+    // Se o usuário tentar acessar abas avançadas sem pagar, a gente bloqueia!
+    if (tabId === 'auditoria' || tabId === 'relatorios') {
+        document.getElementById('modalPremium').style.display = 'flex';
+        return; // Para o código aqui e não deixa abrir a aba
+    }
+
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    if(event) event.currentTarget.classList.add('active');
+    const nomes = { dashboard: 'Dashboard', notas: 'Notas Fiscais' };
+    document.getElementById('main-title').innerText = `Painel de Controle: ${nomes[tabId]}`;
+}
+
+function fecharModal() {
+    document.getElementById('modalPremium').style.display = 'none';
+}
         }
 
         const ctx = document.getElementById('financeChart').getContext('2d');
